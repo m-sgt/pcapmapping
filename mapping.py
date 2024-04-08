@@ -21,7 +21,7 @@ def getPublicIP():
 
 def retKML(dstip, srcip):
     dst = gi.record_by_name(dstip)
-    src = gi.record_by_name(getPublicIP)
+    src = gi.record_by_name(srcip)
     try:
         dstlongitude = dst['longitude']
         dstlatitude = dst['latitude']
@@ -44,11 +44,11 @@ def retKML(dstip, srcip):
         
 def plotIPs(pcap):
     kmlPts = ''
+    src = getPublicIP()
     for (ts, buf) in pcap:
         try:
             eth = dpkt.ethernet.Ethernet(buf)
             ip = eth.data
-            src = socket.inet_ntoa(ip.src)
             dst = socket.inet_ntoa(ip.dst)
             KML = retKML(dst, src)
             kmlPts = kmlPts + KML
